@@ -8,7 +8,7 @@ Public Class MainForm
     ' FORM EVENTS
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Register your available tools here
-        RegisterTool("Icon & SVG Generator", GetType(SVGIconGeneratorTool))
+        RegisterTool("SVG Image Generator", GetType(SVGImageGeneratorTool))
 
         ' Populate the menu listbox
         LBTools.Items.Clear()
