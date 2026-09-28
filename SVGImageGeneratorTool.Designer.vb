@@ -23,6 +23,10 @@ Partial Class SVGImageGeneratorTool
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         MainSplitContainer = New SplitContainer()
+        PanelSVG = New Panel()
+        HScrollBar1 = New HScrollBar()
+        BtnLoadSVG = New Button()
+        BtnSaveSVG = New Button()
         RTBSVGInput = New Skye.UI.RichTextBox()
         LblSVG = New Skye.UI.Label()
         BtnExportPNGs = New Button()
@@ -34,6 +38,7 @@ Partial Class SVGImageGeneratorTool
         MainSplitContainer.Panel1.SuspendLayout()
         MainSplitContainer.Panel2.SuspendLayout()
         MainSplitContainer.SuspendLayout()
+        PanelSVG.SuspendLayout()
         CType(PBSVGPreview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -46,6 +51,7 @@ Partial Class SVGImageGeneratorTool
         ' 
         ' MainSplitContainer.Panel1
         ' 
+        MainSplitContainer.Panel1.Controls.Add(PanelSVG)
         MainSplitContainer.Panel1.Controls.Add(RTBSVGInput)
         MainSplitContainer.Panel1.Controls.Add(LblSVG)
         ' 
@@ -60,6 +66,44 @@ Partial Class SVGImageGeneratorTool
         MainSplitContainer.SplitterDistance = 541
         MainSplitContainer.SplitterWidth = 5
         MainSplitContainer.TabIndex = 0
+        ' 
+        ' PanelSVG
+        ' 
+        PanelSVG.Controls.Add(HScrollBar1)
+        PanelSVG.Controls.Add(BtnLoadSVG)
+        PanelSVG.Controls.Add(BtnSaveSVG)
+        PanelSVG.Dock = DockStyle.Bottom
+        PanelSVG.Location = New Point(0, 784)
+        PanelSVG.Name = "PanelSVG"
+        PanelSVG.Size = New Size(541, 56)
+        PanelSVG.TabIndex = 2
+        ' 
+        ' HScrollBar1
+        ' 
+        HScrollBar1.Location = New Point(354, 27)
+        HScrollBar1.Name = "HScrollBar1"
+        HScrollBar1.Size = New Size(8, 8)
+        HScrollBar1.TabIndex = 2
+        ' 
+        ' BtnLoadSVG
+        ' 
+        BtnLoadSVG.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        BtnLoadSVG.Location = New Point(379, 14)
+        BtnLoadSVG.Name = "BtnLoadSVG"
+        BtnLoadSVG.Size = New Size(150, 32)
+        BtnLoadSVG.TabIndex = 1
+        BtnLoadSVG.Text = "Load From File"
+        BtnLoadSVG.UseVisualStyleBackColor = True
+        ' 
+        ' BtnSaveSVG
+        ' 
+        BtnSaveSVG.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
+        BtnSaveSVG.Location = New Point(12, 14)
+        BtnSaveSVG.Name = "BtnSaveSVG"
+        BtnSaveSVG.Size = New Size(150, 32)
+        BtnSaveSVG.TabIndex = 0
+        BtnSaveSVG.Text = "Save To File"
+        BtnSaveSVG.UseVisualStyleBackColor = True
         ' 
         ' RTBSVGInput
         ' 
@@ -121,7 +165,7 @@ Partial Class SVGImageGeneratorTool
         PBSVGPreview.Location = New Point(0, 218)
         PBSVGPreview.Margin = New Padding(4)
         PBSVGPreview.Name = "PBSVGPreview"
-        PBSVGPreview.Size = New Size(479, 618)
+        PBSVGPreview.Size = New Size(475, 618)
         PBSVGPreview.SizeMode = PictureBoxSizeMode.CenterImage
         PBSVGPreview.TabIndex = 0
         PBSVGPreview.TabStop = False
@@ -149,6 +193,7 @@ Partial Class SVGImageGeneratorTool
         MainSplitContainer.Panel2.ResumeLayout(False)
         CType(MainSplitContainer, ComponentModel.ISupportInitialize).EndInit()
         MainSplitContainer.ResumeLayout(False)
+        PanelSVG.ResumeLayout(False)
         CType(PBSVGPreview, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
@@ -161,5 +206,9 @@ Partial Class SVGImageGeneratorTool
     Friend WithEvents LblSizes As Skye.UI.Label
     Friend WithEvents BtnExportPNGs As Button
     Friend WithEvents BtnPreview As Button
+    Friend WithEvents PanelSVG As Panel
+    Friend WithEvents HScrollBar1 As HScrollBar
+    Friend WithEvents BtnLoadSVG As Button
+    Friend WithEvents BtnSaveSVG As Button
 
 End Class

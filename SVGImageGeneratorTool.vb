@@ -83,6 +83,50 @@ Public Class SVGImageGeneratorTool
             End If
         End Using
     End Sub
+    Private Sub BtnSaveSVG_Click(sender As Object, e As EventArgs) Handles BtnSaveSVG.Click
+        If String.IsNullOrWhiteSpace(RTBSVGInput.Text) Then
+            MessageBox.Show("There is no SVG markup to save.", "Empty Content", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+        Using sfd As New SaveFileDialog()
+            sfd.Filter = "Scalable Vector Graphics (*.svg)|*.svg|Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            sfd.DefaultExt = "svg"
+            sfd.Title = "Save SVG Code"
+            sfd.FileName = "icon_template.svg"
+            If sfd.ShowDialog() = DialogResult.OK Then
+                Try
+                    System.IO.File.WriteAllText(sfd.FileName, RTBSVGInput.Text)
+                    MessageBox.Show("SVG code saved successfully!", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Catch ex As Exception
+                    MessageBox.Show($"Failed to save file: {ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End If
+        End Using
+    End Sub
+    Private Sub BtnLoadSVG_Click(sender As Object, e As EventArgs) Handles BtnLoadSVG.Click
+        Using ofd As New OpenFileDialog()
+            ofd.Filter = "Scalable Vector Graphics (*.svg)|*.svg|Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            ofd.Title = "Open SVG File"
+            If ofd.ShowDialog() = DialogResult.OK Then
+                Try
+                    ' Read the file contents into the input RichTextBox / TextBox
+                    Dim fileText As String = System.IO.File.ReadAllText(ofd.FileName)
+                    RTBSVGInput.Text = fileText
+                    ' Trigger a preview refresh if a size is currently selected
+                    If CLBSizes.SelectedItem IsNot Nothing Then
+                        Dim selectedText As String = CLBSizes.SelectedItem.ToString().ToLower().Replace("x", "").Trim()
+                        Dim targetSize As Integer
+                        If Integer.TryParse(selectedText, targetSize) OrElse Integer.TryParse(CLBSizes.SelectedItem.ToString(), targetSize) Then
+                            PBSVGPreview.Image?.Dispose()
+                            PBSVGPreview.Image = RenderSVGToBitmap(RTBSVGInput.Text, targetSize)
+                        End If
+                    End If
+                Catch ex As Exception
+                    MessageBox.Show($"Failed to load file: {ex.Message}", "File Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            End If
+        End Using
+    End Sub
 
     ' METHODS
     Private Sub InitializeSizeList()
