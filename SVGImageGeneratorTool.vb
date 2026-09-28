@@ -47,6 +47,12 @@ Public Class SVGImageGeneratorTool
     End Sub
 
     ' EVENTS
+    Private Sub CLBSizes_SelectedValueChanged(sender As Object, e As EventArgs) Handles CLBSizes.SelectedValueChanged
+        If CLBSizes.SelectedItem Is Nothing Then Return
+        Debug.Print($"Selected size changed to: {CLBSizes.SelectedItem}")
+        PBSVGPreview.Image?.Dispose()
+        PBSVGPreview.Image = RenderSVGToBitmap(RTBSVGInput.Text, CInt(CLBSizes.SelectedItem))
+    End Sub
     Private Sub BtnPreview_Click(sender As Object, e As EventArgs) Handles BtnPreview.Click
         RenderPreview()
     End Sub
@@ -62,7 +68,7 @@ Public Class SVGImageGeneratorTool
                 For Each item In CLBSizes.CheckedItems
                     Dim sz As Integer
                     If Integer.TryParse(item.ToString(), sz) Then
-                        Using bmp = RenderSvgToBitmap(RTBSVGInput.Text, sz)
+                        Using bmp = RenderSVGToBitmap(RTBSVGInput.Text, sz)
                             If bmp IsNot Nothing Then
                                 Dim filePath = Path.Combine(outputFolder, $"image_{sz}x{sz}.png")
                                 bmp.Save(filePath, ImageFormat.Png)
@@ -97,27 +103,26 @@ Public Class SVGImageGeneratorTool
     ''' <summary>
     ''' Parses SVG text and renders it to a 32bpp transparent bitmap at target size.
     ''' </summary>
-    Private Function RenderSvgToBitmap(svgText As String, targetSize As Integer) As Bitmap
+    Private Function RenderSVGToBitmap(svgText As String, targetSize As Integer) As Bitmap
         If String.IsNullOrWhiteSpace(svgText) Then Return Nothing
-
         Try
             Dim svgDoc = SvgDocument.FromSvg(Of SvgDocument)(svgText)
             If svgDoc Is Nothing Then Return Nothing
 
-            ' Render cleanly to specified pixel width/height
-            Return svgDoc.Draw(targetSize, targetSize)
+            ' Force the internal document viewport to scale to targetSize
+            svgDoc.Width = targetSize
+            svgDoc.Height = targetSize
+
+            ' Render cleanly to specified pixel dimensions
+            Return svgDoc.Draw()
         Catch ex As Exception
             MessageBox.Show($"Error rendering SVG: {ex.Message}", "SVG Parsing Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return Nothing
         End Try
     End Function
     Private Sub RenderPreview()
-        If PBSVGPreview.Image IsNot Nothing Then
-            PBSVGPreview.Image.Dispose()
-        End If
-
-        ' Render a 64x64 preview
-        PBSVGPreview.Image = RenderSvgToBitmap(RTBSVGInput.Text, 64)
+        PBSVGPreview.Image?.Dispose()
+        PBSVGPreview.Image = RenderSVGToBitmap(RTBSVGInput.Text, 256)
     End Sub
 
 End Class

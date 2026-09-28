@@ -7,6 +7,8 @@ Public Class MainForm
 
     ' FORM EVENTS
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = My.Application.Info.Title & " " & My.Application.Info.Description & " v" & My.Application.Info.Version.ToString(3)
+
         ' Register your available tools here
         RegisterTool("SVG Image Generator", GetType(SVGImageGeneratorTool))
 

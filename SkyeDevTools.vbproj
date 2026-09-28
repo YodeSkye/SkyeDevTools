@@ -6,7 +6,23 @@
     <StartupObject>SkyeDevTools.My.MyApplication</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
     <MyType>WindowsForms</MyType>
+    <OptionStrict>On</OptionStrict>
+	
+	<!-- App Versioning -->
+	<Version>0.1.0</Version>
+	<AssemblyVersion>0.1.0</AssemblyVersion>
+	<FileVersion>0.1.0</FileVersion>
+
+	<Title>SkyeDevTools</Title>
+	<Description>Developer Utility Suite</Description>
+	<Company>Skye</Company>
+	<Product>SkyeDevTools</Product>
+	<ApplicationIcon>My Project\IconSkyeDevTools.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="My Project\IconSkyeDevTools.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <Import Include="System.Data" />

@@ -41,6 +41,7 @@ Partial Class SVGImageGeneratorTool
         ' 
         MainSplitContainer.Dock = DockStyle.Fill
         MainSplitContainer.Location = New Point(0, 0)
+        MainSplitContainer.Margin = New Padding(4)
         MainSplitContainer.Name = "MainSplitContainer"
         ' 
         ' MainSplitContainer.Panel1
@@ -55,83 +56,95 @@ Partial Class SVGImageGeneratorTool
         MainSplitContainer.Panel2.Controls.Add(CLBSizes)
         MainSplitContainer.Panel2.Controls.Add(PBSVGPreview)
         MainSplitContainer.Panel2.Controls.Add(LblSizes)
-        MainSplitContainer.Size = New Size(600, 600)
-        MainSplitContainer.SplitterDistance = 200
+        MainSplitContainer.Size = New Size(1029, 840)
+        MainSplitContainer.SplitterDistance = 541
+        MainSplitContainer.SplitterWidth = 5
         MainSplitContainer.TabIndex = 0
         ' 
         ' RTBSVGInput
         ' 
         RTBSVGInput.Dock = DockStyle.Fill
-        RTBSVGInput.Font = New Font("Consolas", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        RTBSVGInput.Location = New Point(0, 27)
+        RTBSVGInput.Font = New Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        RTBSVGInput.Location = New Point(0, 38)
+        RTBSVGInput.Margin = New Padding(4)
         RTBSVGInput.Name = "RTBSVGInput"
-        RTBSVGInput.Size = New Size(200, 573)
+        RTBSVGInput.Size = New Size(541, 802)
         RTBSVGInput.TabIndex = 1
         RTBSVGInput.Text = ""
+        RTBSVGInput.WordWrap = False
         ' 
         ' LblSVG
         ' 
         LblSVG.Dock = DockStyle.Top
         LblSVG.Location = New Point(0, 0)
+        LblSVG.Margin = New Padding(4, 0, 4, 0)
         LblSVG.Name = "LblSVG"
-        LblSVG.Size = New Size(200, 27)
+        LblSVG.Size = New Size(541, 38)
         LblSVG.TabIndex = 0
-        LblSVG.Text = "Paste SVG Code Here:"
-        LblSVG.TextAlign = ContentAlignment.MiddleLeft
+        LblSVG.Text = "Paste SVG Code Here"
+        LblSVG.TextAlign = ContentAlignment.BottomCenter
         ' 
         ' BtnExportPNGs
         ' 
-        BtnExportPNGs.Location = New Point(96, 26)
+        BtnExportPNGs.Location = New Point(322, 178)
+        BtnExportPNGs.Margin = New Padding(4)
         BtnExportPNGs.Name = "BtnExportPNGs"
-        BtnExportPNGs.Size = New Size(115, 23)
+        BtnExportPNGs.Size = New Size(148, 32)
         BtnExportPNGs.TabIndex = 4
         BtnExportPNGs.Text = "Export PNGs"
         BtnExportPNGs.UseVisualStyleBackColor = True
         ' 
         ' BtnPreview
         ' 
-        BtnPreview.Location = New Point(96, 135)
+        BtnPreview.Location = New Point(4, 38)
+        BtnPreview.Margin = New Padding(4)
         BtnPreview.Name = "BtnPreview"
-        BtnPreview.Size = New Size(297, 23)
+        BtnPreview.Size = New Size(99, 62)
         BtnPreview.TabIndex = 3
         BtnPreview.Text = "Render Preview"
         BtnPreview.UseVisualStyleBackColor = True
         ' 
         ' CLBSizes
         ' 
-        CLBSizes.CheckOnClick = True
         CLBSizes.FormattingEnabled = True
-        CLBSizes.Location = New Point(3, 27)
+        CLBSizes.Location = New Point(203, 38)
+        CLBSizes.Margin = New Padding(4)
         CLBSizes.Name = "CLBSizes"
-        CLBSizes.Size = New Size(87, 130)
+        CLBSizes.Size = New Size(111, 172)
         CLBSizes.TabIndex = 1
         ' 
         ' PBSVGPreview
         ' 
-        PBSVGPreview.Dock = DockStyle.Bottom
-        PBSVGPreview.Location = New Point(0, 164)
+        PBSVGPreview.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        PBSVGPreview.BackColor = Color.White
+        PBSVGPreview.BorderStyle = BorderStyle.FixedSingle
+        PBSVGPreview.Location = New Point(0, 218)
+        PBSVGPreview.Margin = New Padding(4)
         PBSVGPreview.Name = "PBSVGPreview"
-        PBSVGPreview.Size = New Size(396, 436)
+        PBSVGPreview.Size = New Size(479, 618)
         PBSVGPreview.SizeMode = PictureBoxSizeMode.CenterImage
         PBSVGPreview.TabIndex = 0
         PBSVGPreview.TabStop = False
         ' 
         ' LblSizes
         ' 
-        LblSizes.Location = New Point(3, 8)
+        LblSizes.Location = New Point(202, 13)
+        LblSizes.Margin = New Padding(4, 0, 4, 0)
         LblSizes.Name = "LblSizes"
-        LblSizes.Size = New Size(87, 18)
+        LblSizes.Size = New Size(112, 25)
         LblSizes.TabIndex = 2
         LblSizes.Text = "Sizes To Export"
         LblSizes.TextAlign = ContentAlignment.BottomCenter
         ' 
-        ' SVGIconGeneratorTool
+        ' SVGImageGeneratorTool
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(9F, 21F)
         AutoScaleMode = AutoScaleMode.Font
         Controls.Add(MainSplitContainer)
-        Name = "SVGIconGeneratorTool"
-        Size = New Size(600, 600)
+        Font = New Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Margin = New Padding(4)
+        Name = "SVGImageGeneratorTool"
+        Size = New Size(1029, 840)
         MainSplitContainer.Panel1.ResumeLayout(False)
         MainSplitContainer.Panel2.ResumeLayout(False)
         CType(MainSplitContainer, ComponentModel.ISupportInitialize).EndInit()
