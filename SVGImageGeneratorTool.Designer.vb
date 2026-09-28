@@ -27,8 +27,8 @@ Partial Class SVGImageGeneratorTool
         HScrollBar1 = New HScrollBar()
         BtnLoadSVG = New Button()
         BtnSaveSVG = New Button()
-        RTBSVGInput = New Skye.UI.RichTextBox()
         LblSVG = New Skye.UI.Label()
+        RTBSVGInput = New Skye.UI.RichTextBox()
         BtnExportPNGs = New Button()
         BtnPreview = New Button()
         CLBSizes = New CheckedListBox()
@@ -51,8 +51,8 @@ Partial Class SVGImageGeneratorTool
         ' 
         ' MainSplitContainer.Panel1
         ' 
-        MainSplitContainer.Panel1.Controls.Add(PanelSVG)
         MainSplitContainer.Panel1.Controls.Add(RTBSVGInput)
+        MainSplitContainer.Panel1.Controls.Add(PanelSVG)
         MainSplitContainer.Panel1.Controls.Add(LblSVG)
         ' 
         ' MainSplitContainer.Panel2
@@ -105,18 +105,6 @@ Partial Class SVGImageGeneratorTool
         BtnSaveSVG.Text = "Save To File"
         BtnSaveSVG.UseVisualStyleBackColor = True
         ' 
-        ' RTBSVGInput
-        ' 
-        RTBSVGInput.Dock = DockStyle.Fill
-        RTBSVGInput.Font = New Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        RTBSVGInput.Location = New Point(0, 38)
-        RTBSVGInput.Margin = New Padding(4)
-        RTBSVGInput.Name = "RTBSVGInput"
-        RTBSVGInput.Size = New Size(541, 802)
-        RTBSVGInput.TabIndex = 1
-        RTBSVGInput.Text = ""
-        RTBSVGInput.WordWrap = False
-        ' 
         ' LblSVG
         ' 
         LblSVG.Dock = DockStyle.Top
@@ -127,6 +115,19 @@ Partial Class SVGImageGeneratorTool
         LblSVG.TabIndex = 0
         LblSVG.Text = "Paste SVG Code Here"
         LblSVG.TextAlign = ContentAlignment.BottomCenter
+        ' 
+        ' RTBSVGInput
+        ' 
+        RTBSVGInput.Dock = DockStyle.Fill
+        RTBSVGInput.Font = New Font("Consolas", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        RTBSVGInput.Location = New Point(0, 38)
+        RTBSVGInput.Margin = New Padding(4, 4, 4, 2000)
+        RTBSVGInput.Name = "RTBSVGInput"
+        RTBSVGInput.ScrollBars = RichTextBoxScrollBars.ForcedBoth
+        RTBSVGInput.Size = New Size(541, 746)
+        RTBSVGInput.TabIndex = 1
+        RTBSVGInput.Text = ""
+        RTBSVGInput.WordWrap = False
         ' 
         ' BtnExportPNGs
         ' 
@@ -165,7 +166,7 @@ Partial Class SVGImageGeneratorTool
         PBSVGPreview.Location = New Point(0, 218)
         PBSVGPreview.Margin = New Padding(4)
         PBSVGPreview.Name = "PBSVGPreview"
-        PBSVGPreview.Size = New Size(475, 618)
+        PBSVGPreview.Size = New Size(468, 618)
         PBSVGPreview.SizeMode = PictureBoxSizeMode.CenterImage
         PBSVGPreview.TabIndex = 0
         PBSVGPreview.TabStop = False
