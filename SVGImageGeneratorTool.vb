@@ -30,6 +30,15 @@ Public Class SVGImageGeneratorTool
 
     Public Sub OnToolLoaded() Implements IDevTool.OnToolLoaded
         InitializeSizeList()
+        BtnBGDark.BackColor = Color.Black
+        BtnBGDarkGrey.BackColor = Color.FromArgb(64, 64, 64)
+        BtnBGNeutralGrey.BackColor = Color.FromArgb(128, 128, 128)
+        BtnBGLightGrey.BackColor = Color.FromArgb(224, 224, 224)
+        BtnBGLight.BackColor = Color.White
+        BtnBGTransparent.BackColor = Color.Transparent
+        BtnBGTransparent.BackgroundImageLayout = ImageLayout.Tile
+        BtnBGTransparent.BackgroundImage = GetCheckerboardBackground()
+        BtnBGSelect.BackColor = Color.Red
 
         ' Load default sample SVG into the text box if empty
         If String.IsNullOrWhiteSpace(RTBSVGInput.Text) Then
@@ -127,6 +136,41 @@ Public Class SVGImageGeneratorTool
             End If
         End Using
     End Sub
+    Private Sub BtnBGDark_Click(sender As Object, e As EventArgs) Handles BtnBGDark.Click
+        PBSVGPreview.BackColor = Color.Black
+        PBSVGPreview.BackgroundImage = Nothing
+    End Sub
+    Private Sub BtnBGDarkGrey_Click(sender As Object, e As EventArgs) Handles BtnBGDarkGrey.Click
+        PBSVGPreview.BackColor = Color.FromArgb(64, 64, 64)
+        PBSVGPreview.BackgroundImage = Nothing
+    End Sub
+    Private Sub BtnBGNeutralGrey_Click(sender As Object, e As EventArgs) Handles BtnBGNeutralGrey.Click
+        PBSVGPreview.BackColor = Color.FromArgb(128, 128, 128)
+        PBSVGPreview.BackgroundImage = Nothing
+    End Sub
+    Private Sub BtnBGLightGrey_Click(sender As Object, e As EventArgs) Handles BtnBGLightGrey.Click
+        PBSVGPreview.BackColor = Color.FromArgb(224, 224, 224)
+        PBSVGPreview.BackgroundImage = Nothing
+    End Sub
+    Private Sub BtnBGLight_Click(sender As Object, e As EventArgs) Handles BtnBGLight.Click
+        PBSVGPreview.BackColor = Color.White
+        PBSVGPreview.BackgroundImage = Nothing
+    End Sub
+    Private Sub BtnBGTransparent_Click(sender As Object, e As EventArgs) Handles BtnBGTransparent.Click
+        PBSVGPreview.BackColor = Color.Transparent
+        PBSVGPreview.BackgroundImageLayout = ImageLayout.Tile
+        PBSVGPreview.BackgroundImage = GetCheckerboardBackground()
+    End Sub
+    Private Sub BtnBGSelect_Click(sender As Object, e As EventArgs) Handles BtnBGSelect.Click
+        Using colorDialog As New ColorDialog()
+            colorDialog.Color = PBSVGPreview.BackColor
+            colorDialog.FullOpen = True
+            If colorDialog.ShowDialog() = DialogResult.OK Then
+                PBSVGPreview.BackColor = colorDialog.Color
+                PBSVGPreview.BackgroundImage = Nothing
+            End If
+        End Using
+    End Sub
 
     ' METHODS
     Private Sub InitializeSizeList()
@@ -168,5 +212,16 @@ Public Class SVGImageGeneratorTool
         PBSVGPreview.Image?.Dispose()
         PBSVGPreview.Image = RenderSVGToBitmap(RTBSVGInput.Text, 256)
     End Sub
+    Private Function GetCheckerboardBackground() As Bitmap
+        Dim bmp As New Bitmap(16, 16)
+        Using g As Graphics = Graphics.FromImage(bmp)
+            g.Clear(Color.White)
+            Using lightGrayBrush As New SolidBrush(Color.FromArgb(220, 220, 220))
+                g.FillRectangle(lightGrayBrush, 0, 0, 8, 8)
+                g.FillRectangle(lightGrayBrush, 8, 8, 8, 8)
+            End Using
+        End Using
+        Return bmp
+    End Function
 
 End Class
