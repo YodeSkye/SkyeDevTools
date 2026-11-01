@@ -42,6 +42,7 @@ Partial Class SVGImageGeneratorTool
         BtnBGLight = New Button()
         BtnBGTransparent = New Button()
         BtnBGSelect = New Button()
+        BtnExportICO = New Button()
         CType(MainSplitContainer, ComponentModel.ISupportInitialize).BeginInit()
         MainSplitContainer.Panel1.SuspendLayout()
         MainSplitContainer.Panel2.SuspendLayout()
@@ -66,6 +67,7 @@ Partial Class SVGImageGeneratorTool
         ' 
         ' MainSplitContainer.Panel2
         ' 
+        MainSplitContainer.Panel2.Controls.Add(BtnExportICO)
         MainSplitContainer.Panel2.Controls.Add(BtnExportPNGs)
         MainSplitContainer.Panel2.Controls.Add(BtnPreview)
         MainSplitContainer.Panel2.Controls.Add(CLBSizes)
@@ -142,7 +144,7 @@ Partial Class SVGImageGeneratorTool
         ' BtnExportPNGs
         ' 
         BtnExportPNGs.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        BtnExportPNGs.Location = New Point(412, 178)
+        BtnExportPNGs.Location = New Point(410, 145)
         BtnExportPNGs.Margin = New Padding(4)
         BtnExportPNGs.Name = "BtnExportPNGs"
         BtnExportPNGs.Size = New Size(148, 32)
@@ -164,7 +166,7 @@ Partial Class SVGImageGeneratorTool
         ' 
         CLBSizes.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         CLBSizes.FormattingEnabled = True
-        CLBSizes.Location = New Point(293, 38)
+        CLBSizes.Location = New Point(292, 38)
         CLBSizes.Margin = New Padding(4)
         CLBSizes.Name = "CLBSizes"
         CLBSizes.Size = New Size(111, 172)
@@ -178,7 +180,7 @@ Partial Class SVGImageGeneratorTool
         PBSVGPreview.Location = New Point(0, 218)
         PBSVGPreview.Margin = New Padding(4)
         PBSVGPreview.Name = "PBSVGPreview"
-        PBSVGPreview.Size = New Size(559, 618)
+        PBSVGPreview.Size = New Size(558, 618)
         PBSVGPreview.SizeMode = PictureBoxSizeMode.CenterImage
         PBSVGPreview.TabIndex = 0
         PBSVGPreview.TabStop = False
@@ -186,7 +188,7 @@ Partial Class SVGImageGeneratorTool
         ' LblSizes
         ' 
         LblSizes.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        LblSizes.Location = New Point(292, 13)
+        LblSizes.Location = New Point(291, 13)
         LblSizes.Margin = New Padding(4, 0, 4, 0)
         LblSizes.Name = "LblSizes"
         LblSizes.Size = New Size(112, 25)
@@ -272,6 +274,17 @@ Partial Class SVGImageGeneratorTool
         BtnBGSelect.TabIndex = 6
         BtnBGSelect.UseVisualStyleBackColor = True
         ' 
+        ' BtnExportICO
+        ' 
+        BtnExportICO.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        BtnExportICO.Location = New Point(410, 178)
+        BtnExportICO.Margin = New Padding(4)
+        BtnExportICO.Name = "BtnExportICO"
+        BtnExportICO.Size = New Size(148, 32)
+        BtnExportICO.TabIndex = 6
+        BtnExportICO.Text = "Export ICO"
+        BtnExportICO.UseVisualStyleBackColor = True
+        ' 
         ' SVGImageGeneratorTool
         ' 
         AutoScaleDimensions = New SizeF(9F, 21F)
@@ -311,5 +324,6 @@ Partial Class SVGImageGeneratorTool
     Friend WithEvents BtnBGLight As Button
     Friend WithEvents BtnBGTransparent As Button
     Friend WithEvents BtnBGSelect As Button
+    Friend WithEvents BtnExportICO As Button
 
 End Class

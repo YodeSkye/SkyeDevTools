@@ -11,12 +11,12 @@ Public Class SVGImageGeneratorTool
 
     ' DECLARATIONS
     Private Const DefaultSVG As String =
-    "<svg xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 32 32"">" & vbCrLf &
-    "  <path d=""M 14,2 L 18,2 L 19,5 A 11,11 0 0,1 22,6 L 25,4 L 28,7 L 26,10 A 11,11 0 0,1 27,13 L 30,14 L 30,18 L 27,19 A 11,11 0 0,1 26,22 L 28,25 L 25,28 L 22,26 A 11,11 0 0,1 19,27 L 18,30 L 14,30 L 13,27 A 11,11 0 0,1 10,26 L 7,28 L 4,25 L 6,22 A 11,11 0 0,1 5,19 L 2,18 L 2,14 L 5,13 A 11,11 0 0,1 6,10 L 4,7 L 7,4 L 10,6 A 11,11 0 0,1 13,5 Z"" fill=""#343a40"" />" & vbCrLf &
-    "  <circle cx=""16"" cy=""16"" r=""9"" fill=""#0d6efd"" />" & vbCrLf &
-    "  <circle cx=""16"" cy=""16"" r=""6"" fill=""#ffffff"" />" & vbCrLf &
-    "  <polygon points=""16,11 19,18 16,16 13,18"" fill=""#212529"" />" & vbCrLf &
-    "</svg>"
+        "<svg xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 32 32"">" & vbCrLf &
+        "  <path d=""M 14,2 L 18,2 L 19,5 A 11,11 0 0,1 22,6 L 25,4 L 28,7 L 26,10 A 11,11 0 0,1 27,13 L 30,14 L 30,18 L 27,19 A 11,11 0 0,1 26,22 L 28,25 L 25,28 L 22,26 A 11,11 0 0,1 19,27 L 18,30 L 14,30 L 13,27 A 11,11 0 0,1 10,26 L 7,28 L 4,25 L 6,22 A 11,11 0 0,1 5,19 L 2,18 L 2,14 L 5,13 A 11,11 0 0,1 6,10 L 4,7 L 7,4 L 10,6 A 11,11 0 0,1 13,5 Z"" fill=""#343a40"" />" & vbCrLf &
+        "  <circle cx=""16"" cy=""16"" r=""9"" fill=""#0d6efd"" />" & vbCrLf &
+        "  <circle cx=""16"" cy=""16"" r=""6"" fill=""#ffffff"" />" & vbCrLf &
+        "  <polygon points=""16,11 19,18 16,16 13,18"" fill=""#212529"" />" & vbCrLf &
+        "</svg>"
     Public ReadOnly Property ToolName As String Implements IDevTool.ToolName
         Get
             Return "Icon & SVG Generator"
@@ -87,8 +87,66 @@ Public Class SVGImageGeneratorTool
                     End If
                 Next
 
-                MessageBox.Show($"Successfully exported {exportedCount} PNG images to:{vbCrLf}{outputFolder}",
-                                "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Dim toast As New Skye.UI.ToastOptions With {
+                    .Title = "PNG Export Complete",
+                    .Message = $"Successfully exported {exportedCount} PNG images to:{vbCrLf}{outputFolder}",
+                    .Duration = 6000
+                }
+                Skye.UI.Toast.ShowToast(toast)
+
+            End If
+        End Using
+    End Sub
+    Private Sub BtnExportICO_Click(sender As Object, e As EventArgs) Handles BtnExportICO.Click
+        If String.IsNullOrWhiteSpace(RTBSVGInput.Text) Then Return
+        If CLBSizes.CheckedItems.Count = 0 Then Return
+
+        Using sfd As New SaveFileDialog()
+            sfd.Title = "Save Multi-Resolution Icon File"
+            sfd.Filter = "Icon Files (*.ico)|*.ico"
+            sfd.FileName = "app_icon.ico"
+
+            If sfd.ShowDialog() = DialogResult.OK Then
+                Dim iconEntries As New List(Of (Size As Integer, Bmp As Bitmap))()
+
+                Try
+                    ' Loop through checked sizes and render bitmaps
+                    For Each item In CLBSizes.CheckedItems
+                        Dim sz As Integer
+                        If Integer.TryParse(item.ToString(), sz) Then
+                            Dim bmp = RenderSVGToBitmap(RTBSVGInput.Text, sz)
+                            If bmp IsNot Nothing Then
+                                iconEntries.Add((sz, bmp))
+                            End If
+                        End If
+                    Next
+
+                    If iconEntries.Count > 0 Then
+                        ' Pack all generated sizes into a single .ico file
+                        SaveBitmapsAsIcon(iconEntries, sfd.FileName)
+
+                        Dim toast As New Skye.UI.ToastOptions With {
+                            .Title = "Icon Export Complete",
+                            .Message = $"Successfully created multi-resolution icon file containing {iconEntries.Count} sizes.",
+                            .Duration = 6000
+                        }
+                        Skye.UI.Toast.ShowToast(toast)
+
+                    End If
+
+                Catch ex As Exception
+                    Dim toast As New Skye.UI.ToastOptions With {
+                        .Title = "Icon Export Error",
+                        .Message = $"Failed to generate icon file: {ex.Message}",
+                        .Duration = 6000
+                    }
+                    Skye.UI.Toast.ShowToast(toast)
+                Finally
+                    ' Clean up GDI+ bitmap objects to prevent memory/handle leaks
+                    For Each entry In iconEntries
+                        entry.Bmp?.Dispose()
+                    Next
+                End Try
             End If
         End Using
     End Sub
@@ -211,6 +269,55 @@ Public Class SVGImageGeneratorTool
     Private Sub RenderPreview()
         PBSVGPreview.Image?.Dispose()
         PBSVGPreview.Image = RenderSVGToBitmap(RTBSVGInput.Text, 256)
+    End Sub
+    Private Sub SaveBitmapsAsIcon(bitmaps As List(Of (Size As Integer, Bmp As Bitmap)), filePath As String)
+        Using fs As New FileStream(filePath, FileMode.Create)
+            Using writer As New BinaryWriter(fs)
+                Dim imageCount As Integer = bitmaps.Count
+
+                ' 1. Write ICONDIR Header (6 bytes)
+                writer.Write(CUShort(0))          ' Reserved (must be 0)
+                writer.Write(CUShort(1))          ' Image type (1 = ICO)
+                writer.Write(CUShort(imageCount)) ' Number of images in file
+
+                ' Calculate starting offset: 6 bytes for header + 16 bytes per entry row
+                Dim currentOffset As UInteger = CUInt(6 + (16 * imageCount))
+
+                ' Render and cache raw PNG data bytes for each size
+                Dim pngDataList As New List(Of Byte())()
+                For Each entry In bitmaps
+                    Using ms As New MemoryStream()
+                        entry.Bmp.Save(ms, ImageFormat.Png)
+                        pngDataList.Add(ms.ToArray())
+                    End Using
+                Next
+
+                ' 2. Write ICONDIRENTRY for each image layer (16 bytes each)
+                For i As Integer = 0 To bitmaps.Count - 1
+                    Dim sz = bitmaps(i).Size
+                    Dim pngBytes = pngDataList(i)
+
+                    ' In ICO specs, dimensions of 256x256 are represented by a value of 0
+                    Dim dimByte As Byte = If(sz >= 256, CByte(0), CByte(sz))
+
+                    writer.Write(dimByte)               ' Width
+                    writer.Write(dimByte)               ' Height
+                    writer.Write(CByte(0))              ' Color count (0 for true color)
+                    writer.Write(CByte(0))              ' Reserved
+                    writer.Write(CUShort(1))            ' Color planes
+                    writer.Write(CUShort(32))           ' Bits per pixel
+                    writer.Write(CUInt(pngBytes.Length)) ' Size of the PNG buffer in bytes
+                    writer.Write(currentOffset)         ' File offset where this image payload starts
+
+                    currentOffset += CUInt(pngBytes.Length)
+                Next
+
+                ' 3. Write the raw PNG byte arrays consecutively
+                For Each pngBytes In pngDataList
+                    writer.Write(pngBytes)
+                Next
+            End Using
+        End Using
     End Sub
     Private Function GetCheckerboardBackground() As Bitmap
         Dim bmp As New Bitmap(16, 16)
